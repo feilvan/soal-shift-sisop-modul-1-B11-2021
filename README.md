@@ -83,7 +83,7 @@ Buat folder seperti format
 Lalu pindah gambar & log ke folder
 
     mv ./Koleksi_* "./$download_date/"
-    mv ./foto.log "./$download_date/"
+    mv ./Foto.log "./$download_date/"
     
 Gunakan cron untuk otomatisasi
 
