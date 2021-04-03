@@ -1,0 +1,6 @@
+0 20 1-31/7,2-31/4 * * bash ./home/xa/modul1/soal3:/soal3b.sh
+
+# menit 0
+# jam 20 (8 malam)
+# untuk tgl 1-31 setiap 7 hari sekali
+# untuk tgl 2-31 setiap 4 hari sekali
