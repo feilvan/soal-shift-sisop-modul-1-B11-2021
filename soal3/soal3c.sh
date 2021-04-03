@@ -1,25 +1,46 @@
 #! /bin/sh/
-# sebelumnya buat folder koleksi untuk mengumpulkan semuanya
 
-function kitten() {
+kitten () {
+   echo "Download: Kucing"
    cd Koleksi
-   # buat folder
    mkdir $(date "+ Kucing_%d-%m-%Y")
    cd $(date "+ Kucing_%d-%m-%Y")
-   # download gambar
-   wget https://loremflickr.com/320/240/kitten
+   printf "" > Foto.log
+   wget https://loremflickr.com/320/240/kitten -a Foto.log
    cd
 }
 
-function bunny() {
+bunny () {
+   echo "Download: Kelinci"
    cd Koleksi
    mkdir $(date "+ Kelinci_%d-%m-%Y")
    cd $(date "+ Kelinci_%d-%m-%Y")
-   wget https://loremflickr.com/320/240/bunny
+   printf "" > Foto.log
+   wget https://loremflickr.com/320/240/bunny -a Foto.log
    cd
 }
 
-# misal untuk mengunduh gambar kucing, bisa menggunakan
-# $ source soal3c.sh; kitten
+d=$(date +"%a %d %b %Y")
+day=$(($(date +"%w")+1))
+week=$(($(date +"%U")+1))
 
-# otomatisasi ada di cron3e.tab
+echo "$d"
+echo "Day: $day"
+echo "Week: $week"
+
+if [ $((week%2)) -eq 0 ] # minggu genap
+then
+   if [ $((day%2)) -eq 0 ] # hari genap
+   then
+      kitten
+   else # hari ganjil
+      bunny
+   fi
+else # minggu ganjil
+   if [ $((day%2)) -eq 0 ] # hari genap
+   then
+      bunny
+   else # hari ganjil
+      kitten
+   fi
+fi
