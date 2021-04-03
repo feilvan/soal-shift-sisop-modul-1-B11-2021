@@ -72,7 +72,7 @@ Selanjutnya jika nama tidak sama maka akan direname
 
 Jalankan script 3a
 
-    cd ~/modul1/soal3:
+    cd ~/modul1/soal3
     bash ./soal3a.sh
     
 Buat folder seperti format
