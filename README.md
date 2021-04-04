@@ -96,6 +96,118 @@ Gunakan cron untuk otomatisasi
     # untuk tgl 2-31 setiap 4 hari sekali
     
 Berikut hasil dari script diatas
-![3a](https://i.imgur.com/wqnAOhV.png)
+![3b](https://i.imgur.com/wqnAOhV.png)
 
-#### 3b. Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu mengunduh gambar kucing dan kelinci secara bergantian (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, nama folder diberi awalan "Kucing_" atau "Kelinci_" (contoh : "Kucing_13-03-2023").
+#### 3c. Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu mengunduh gambar kucing dan kelinci secara bergantian (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, nama folder diberi awalan "Kucing_" atau "Kelinci_" (contoh : "Kucing_13-03-2023").
+
+Pertama buat satu folder bernama "Koleksi" untuk mengumpulkan semua folder agar di soal selanjutnya lebih mudah. Lalu buat fungsi untuk mengunduh gambar kucing dan kelinci secara terpisah
+
+    kitten () {
+
+Pindah ke direktori koleksi
+
+       cd Koleksi
+
+Buat folder sesuai format lalu masuk ke direktori tersebut
+
+       mkdir $(date "+ Kucing_%d-%m-%Y")
+       cd $(date "+ Kucing_%d-%m-%Y")
+       
+Buat file untuk menyimpan log agar terminal terlihat rapi (opsional). Lalu download gambar
+       
+       printf "" > Foto.log
+       wget https://loremflickr.com/320/240/kitten -a Foto.log
+       cd
+    }
+    
+Buat script yang sama untuk fungsi mengunduh gambar kelinci
+    
+    bunny () {
+       echo "Download: Kelinci"
+       cd Koleksi
+       mkdir $(date "+ Kelinci_%d-%m-%Y")
+       cd $(date "+ Kelinci_%d-%m-%Y")
+       printf "" > Foto.log
+       wget https://loremflickr.com/320/240/bunny -a Foto.log
+       cd
+    }
+
+Buat inisialisasi week of year & day of week. Dan tampilkan date, day, dan week (opsional)
+
+    d=$(date +"%a %d %b %Y")
+    day=$(($(date +"%w")+1))
+    week=$(($(date +"%U")+1))
+    
+    echo "$d"
+    echo "Day: $day"
+    echo "Week: $week"
+    
+Untuk minggu genap dan hari genap maka jalankan fungsi kitten, untuk minggu genap dan hari ganjil maka jalankan fungsi bunny.
+
+    if [ $((week%2)) -eq 0 ] # minggu genap
+    then
+       if [ $((day%2)) -eq 0 ] # hari genap
+       then
+          kitten
+       else # hari ganjil
+          bunny
+       fi
+       
+Untuk minggu ganjil jalankan kebalikan dari minggu genap.
+       
+    else # minggu ganjil
+       if [ $((day%2)) -eq 0 ] # hari genap
+       then
+          bunny
+       else # hari ganjil
+          kitten
+       fi
+    fi
+    
+Berikut hasil dari script diatas
+![3c](https://i.imgur.com/TTIuAP6.png)
+
+#### 3d. Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan memindahkan seluruh folder ke zip yang diberi nama “Koleksi.zip” dan mengunci zip tersebut dengan password berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
+
+Pisah fungsi zipping dan unzip (untuk dimasukkan ke cron / 3e)
+
+    function zipping() {
+    
+Buat "current" yang nanti digunakan untuk password (MMDDYYYY)
+    
+       current=$(date "+%m%d%Y")
+       
+Buat zip. Set password (-p) dengan "current". Masukkan semua subfolder (-r) ke dalam zip juga
+       
+       zip -P $current -r Koleksi.zip Koleksi/
+
+Hapus direktori setelah masuk zip
+
+       rm -rf Koleksi/
+    }
+    
+
+Berikut hasil fungsi zipping
+![3d zip](https://i.imgur.com/jdCfYKG.png)
+
+Unzip Koleksi.zip
+![3d unzip](https://i.imgur.com/mA6BQIm.png)
+
+#### 3e. Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya ter-zip saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya ter-unzip dan tidak ada file zip sama sekali.
+
+Tambahkan fungsi unzip ke script 3d. Script unzip hampir sama dengan zip
+
+    function unzipping() {
+       current=$(date "+%m%d%Y")
+       unzip -P $current Koleksi.zip
+       rm -f Koleksi.zip
+    }
+    
+Buat cron job untuk menjalankan script secara otomatis
+
+    0 7 * * 1-5 source soal3d.sh; zipping
+    0 18 * * 1-5 source soal3d.sh; unzipping
+    
+7: jalankan (zip) tiap jam 7 pagi </br>
+18: jalankan (unzip) tiap jam 6 sore </br>
+1-5: setiap hari senin sampai Jum'at
