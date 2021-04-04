@@ -67,6 +67,8 @@ Selanjutnya jika nama tidak sama maka akan direname
         fi
     fi
 
+Berikut hasil dari script diatas
+![3a](https://i.imgur.com/EH9ULrk.png)
 
 #### 3b. Karena Kuuhaku malas untuk menjalankan script tersebut secara manual, ia juga meminta kalian untuk menjalankan script tersebut sehari sekali pada jam 8 malam untuk tanggal-tanggal tertentu setiap bulan, yaitu dari tanggal 1 tujuh hari sekali (1,8,...), serta dari tanggal 2 empat hari sekali(2,6,...). Supaya lebih rapi, gambar yang telah diunduh beserta log-nya, dipindahkan ke folder dengan nama tanggal unduhnya dengan format "DD-MM-YYYY" (contoh : "13-03-2023").
 
@@ -93,4 +95,7 @@ Gunakan cron untuk otomatisasi
     # untuk tgl 1-31 setiap 7 hari sekali
     # untuk tgl 2-31 setiap 4 hari sekali
     
+Berikut hasil dari script diatas
+![3a](https://i.imgur.com/wqnAOhV.png)
+
 #### 3b. Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu mengunduh gambar kucing dan kelinci secara bergantian (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, nama folder diberi awalan "Kucing_" atau "Kelinci_" (contoh : "Kucing_13-03-2023").
