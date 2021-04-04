@@ -5,6 +5,44 @@ Anggota kelompok :
 * 05111940000095 - Fuad Elhasan Irfani
 * 05111940000107 - Sabrina Lydia Simanjuntak
 
+## Soal 1
+#### 1a. Membuat script untuk memotong data setiap barisnya sampai ditemukan karakter : pertama sehingga hanya menampilkan error/info, jenisnya dan username
+
+    cat syslog.log | sed 's/^.*: //'
+
+#### 1b. Menampilkan data syslog.log namun hanya yang mengandung kata ERROR lalu memotong usernamenya dengan pattern ' (.*)' lalu di sort setelah itu data yang berulang hanya tampil sekali dengan uniq(sekaligus jumlahnya karena ada -c) dan terakhir di sort by number dan di reverse
+
+    grep 'ERROR' syslog.log | sed 's/^.*ERROR //' | sed 's/ (.*)//' | sort | uniq -c | sort -nr
+
+#### 1d.Sama dengan 1b namun dimasukan ke error_message.csv dan dengan urutan data sesuai perintah soal
+
+    echo Error,Count >> error_message.csv
+    grep -oE '(ERROR) .* ' syslog.log | sed s/"ERROR "// | sort  | uniq -c | sort -nr | while read count text
+    do
+         echo $text,$count >> error_message.csv
+    done
+
+#### 1c&e. Menampilkan data username, jumlah info dan jumlah error dengan urutan berdasarkan username
+
+    echo Username,INFO,ERROR >> user_statistic.csv
+    # memfilter data menjadi jumlah error/info dan usernamenya diurutkan berdasarkan nama ascending lalu di read per line
+    grep -oE '.* (\(.*\))' syslog.log | sed  's/.*(\(.*\))/\1/' | sort | uniq -c | while read count name
+    do 
+        infoUser=`grep -oE ".* (INFO) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
+        errUser=`grep -oE ".* (ERROR) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
+        echo $name,$infoUser,$errUser >> user_statistic.csv
+    done
+
+    #Didalam while loop pada setiap iterasi disimpan data jumlah error dan jumlah info pada setiap username dan sebelum iterasi selanjutnya data berupa nama,jumlah info, jumlah error dikriim ke user_statistic.csv
+
+![1](https://i.imgur.com/PHfmh5m.png)
+![1](https://i.imgur.com/83VRZhx.png)
+![1](https://i.imgur.com/6DZEKCb.png)
+![1](https://i.imgur.com/FDnCpdH.png)
+
+Kendala pengerjaan no. 1 secara keseluruhan:
+* Pengerjaan lama karena belum terlalu paham shell sehingga. Tidak sempat selesai sebelum praktikum berakhir.
+
 ## Soal 3
 #### 3a. Membuat script untuk mengunduh 23 gambar dari "https://loremflickr.com/320/240/kitten" serta menyimpan log-nya ke file "Foto.log". Karena gambar yang diunduh acak, ada kemungkinan gambar yang sama terunduh lebih dari sekali, oleh karena itu kalian harus menghapus gambar yang sama (tidak perlu mengunduh gambar lagi untuk menggantinya). Kemudian menyimpan gambar-gambar tersebut dengan nama "Koleksi_XX" dengan nomor yang berurutan tanpa ada nomor yang hilang (contoh : Koleksi_01, Koleksi_02, ...)
 
