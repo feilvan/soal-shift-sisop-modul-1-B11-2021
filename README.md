@@ -407,7 +407,7 @@ Kendala 3c:
 
 #### 3d. Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan memindahkan seluruh folder ke zip yang diberi nama “Koleksi.zip” dan mengunci zip tersebut dengan password berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
 
-Pisah fungsi zipping dan unzip (untuk dimasukkan ke cron / 3e)
+Buat fungsi zipping (agar bisa dipisah dengan unzip yang ada pada soal 3e)
 
 ```shell
 function zipping() {
