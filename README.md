@@ -14,6 +14,9 @@ Anggota kelompok :
 
     grep 'ERROR' syslog.log | sed 's/^.*ERROR //' | sed 's/ (.*)//' | sort | uniq -c | sort -nr
 
+![1](https://i.imgur.com/PHfmh5m.png)
+![1](https://i.imgur.com/83VRZhx.png)
+
 #### 1d.Sama dengan 1b namun dimasukan ke error_message.csv dan dengan urutan data sesuai perintah soal
 
     echo Error,Count >> error_message.csv
@@ -21,6 +24,8 @@ Anggota kelompok :
     do
          echo $text,$count >> error_message.csv
     done
+
+![1](https://i.imgur.com/6DZEKCb.png)
 
 #### 1c&e. Menampilkan data username, jumlah info dan jumlah error dengan urutan berdasarkan username
 
@@ -35,9 +40,6 @@ Anggota kelompok :
 
     #Didalam while loop pada setiap iterasi disimpan data jumlah error dan jumlah info pada setiap username dan sebelum iterasi selanjutnya data berupa nama,jumlah info, jumlah error dikriim ke user_statistic.csv
 
-![1](https://i.imgur.com/PHfmh5m.png)
-![1](https://i.imgur.com/83VRZhx.png)
-![1](https://i.imgur.com/6DZEKCb.png)
 ![1](https://i.imgur.com/FDnCpdH.png)
 
 Kendala pengerjaan no. 1 secara keseluruhan:
