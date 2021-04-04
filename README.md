@@ -70,6 +70,9 @@ Selanjutnya jika nama tidak sama maka akan direname
 Berikut hasil dari script diatas
 ![3a](https://i.imgur.com/EH9ULrk.png)
 
+Kendala 3a:
+* Pengerjaan lama karena belum terlalu paham shell
+
 #### 3b. Karena Kuuhaku malas untuk menjalankan script tersebut secara manual, ia juga meminta kalian untuk menjalankan script tersebut sehari sekali pada jam 8 malam untuk tanggal-tanggal tertentu setiap bulan, yaitu dari tanggal 1 tujuh hari sekali (1,8,...), serta dari tanggal 2 empat hari sekali(2,6,...). Supaya lebih rapi, gambar yang telah diunduh beserta log-nya, dipindahkan ke folder dengan nama tanggal unduhnya dengan format "DD-MM-YYYY" (contoh : "13-03-2023").
 
 Jalankan script 3a
@@ -97,6 +100,9 @@ Gunakan cron untuk otomatisasi
     
 Berikut hasil dari script diatas
 ![3b](https://i.imgur.com/wqnAOhV.png)
+
+Kendala 3b:
+* Tidak ada
 
 #### 3c. Agar kuuhaku tidak bosan dengan gambar anak kucing, ia juga memintamu untuk mengunduh gambar kelinci dari "https://loremflickr.com/320/240/bunny". Kuuhaku memintamu mengunduh gambar kucing dan kelinci secara bergantian (yang pertama bebas. contoh : tanggal 30 kucing > tanggal 31 kelinci > tanggal 1 kucing > ... ). Untuk membedakan folder yang berisi gambar kucing dan gambar kelinci, nama folder diberi awalan "Kucing_" atau "Kelinci_" (contoh : "Kucing_13-03-2023").
 
@@ -167,6 +173,9 @@ Untuk minggu ganjil jalankan kebalikan dari minggu genap.
 Berikut hasil dari script diatas
 ![3c](https://i.imgur.com/TTIuAP6.png)
 
+Kendala 3c:
+* Salah memahami soal. Saya kira menggunakan cron dan dimasukkan ke cron3e.tab
+
 #### 3d. Untuk mengamankan koleksi Foto dari Steven, Kuuhaku memintamu untuk membuat script yang akan memindahkan seluruh folder ke zip yang diberi nama “Koleksi.zip” dan mengunci zip tersebut dengan password berupa tanggal saat ini dengan format "MMDDYYYY" (contoh : “03032003”).
 
 Pisah fungsi zipping dan unzip (untuk dimasukkan ke cron / 3e)
@@ -193,6 +202,9 @@ Berikut hasil fungsi zipping
 Unzip Koleksi.zip
 ![3d unzip](https://i.imgur.com/mA6BQIm.png)
 
+Kendala 3d:
+* Tidak ada
+
 #### 3e. Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya ter-zip saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya ter-unzip dan tidak ada file zip sama sekali.
 
 Tambahkan fungsi unzip ke script 3d. Script unzip hampir sama dengan zip
@@ -211,3 +223,9 @@ Buat cron job untuk menjalankan script secara otomatis
 7: jalankan (zip) tiap jam 7 pagi </br>
 18: jalankan (unzip) tiap jam 6 sore </br>
 1-5: setiap hari senin sampai Jum'at
+
+Kendala 3e:
+* Tidak ada
+
+Kendala pengerjaan no. 3 secara keseluruhan:
+* Pengerjaan lama karena belum terlalu paham shell sehingga. Tidak sempat selesai sebelum praktikum berakhir.
