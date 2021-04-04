@@ -84,8 +84,8 @@ if(max<=profitpercentage){
 Disini diinisialisasi variable max, dimana variable max berfungsi sebagai pembanding untuk profitpercentage untuk memperoleh nilai terbesar. Dimana, jika nilai profitpercentage lebih besar dari max, maka nilai max akan terupdate sebagai nilai profitpercentage tersebut, hingga setiap nilai yang lebih besar akan tersimpan di max.
 
 ```shell
-END{
-    printf("Transaksi terakhir dengan profit persentase terbesar yaitu %d dengan persentase %d%.",RowID,max)
+END {
+ printf("Transaksi terakhir dengan profit persentase terbesar yaitu %d dengan persentase %d%%.\n\n", RowID, max)
 } ' /home/sabrina/Documents/sisop/Laporan-TokoShiSop.tsv >> hasil.txt
 ```
 
@@ -112,7 +112,7 @@ LC_ALL=C berfungsi untuk membaca data yang mengandung titik di file sebagai koma
 Pada bagian ini, diinisialisasikan orderID, city, dan customername. Dimana untuk orderID=$2 artinya nilai dari profit akan diambil atau terletak di tab ke-2, begitu juga untuk city yang terletas di tab ke-10 dan customername di tab ke-7. Lalu dilakukan pengkondisian, dimana jika orderID mengandung 2017 (pada tahun 2017) dan citynya adalah Albuquerque, maka nama customer yagn memenuhi kedua kondisi tersebut akan dimasukan ke arrname.
 ```shell
 END{
-  print "Daftar nama customer di Albuquerque pada tahun 2017 antara lain:"
+  print "Daftar nama customer di Alburquerque pada tahun 2017 antara lain:"
   for(customername in arrname)
   {print customername}
 }' /home/sabrina/Documents/sisop/Laporan-TokoShiSop.tsv >> hasil.txt
@@ -139,19 +139,20 @@ LC_ALL=C berfungsi untuk membaca data yang mengandung titik di file sebagai koma
 Pada bagian ini, diinisialisasikan segment. Dimana untuk segment=$8 artinya nilai dari profit akan diambil atau terletak di tab ke-8. Lalu dilakukan pengkondisian, dimana jika NR>1 (yang artinya dilakukan pengecualian untuk baris paling atas, yaitu judul dari tabel), maka segmen tersebut akan dimasukan ke arrsegment, dan untuk segment tersebut akan dijumlahkan dan dicatat.
 
 ```shell
-END{
+END {
   minsales=5000
   for(segment in arrsegment){
     if(minsales > arrsegment[segment]){
       minsales=arrsegment[segment]
       namasegment=segment;
     }
+  }
 ```
 END merupakan special rule dalam awk. Pada, section ini, dilakukan inisialisasi untuk minsales yaitu 5000. Lalu untuk segment yang namanya berada di arrsegment, nilai dari arrsegment[segment] akan dibandingkan dengan nilai minsales, dimana jika nilai arrsegment[segment] lebih kecil dari nilai minsales, maka nilai tersebut akan disimpan di minsales dan segment akan tersimpan di namasegment. Minsales dan namasegment akan terupdate jika ditemukan nilai yang lebih kecil, hingga ditemukan nilai yang paling kecil.
 
 ```shell
-  printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %.1f transaksi.\n",namasegment,minsales)
-}' /home/sabrina/Documents/sisop/Laporam-TokoShiSop.tsv >> hasil.txt
+  printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d total transaksi.\n\n", namasegment, minsales)
+}' /home/sabrina/Documents/sisop/Laporan-TokoShiSop.tsv >> hasil.txt
 ```
 Disini tipe segmen yang penjualannya paling sedikit akan diprint. Lalu, dibagian setelah END, /home/sabrina/Document/sisop/Laporan-TokoShiShop.tsv merupakan direktori file Laporan-TokoShiSop.tsv dan hasil outputnya akan dimasukkan ke file hasil.txt.</br>
 
@@ -177,7 +178,7 @@ LC_ALL=C berfungsi untuk membaca data yang mengandung titik di file sebagai koma
 Pada bagian ini, diinisialisasikan profit dan region. Dimana untuk profit=$21 artinya nilai dari profit akan diambil atau terletak di tab ke-21, begitu juga untuk region yang terletas di tab ke-13. Lalu dilakukan pengkondisian, dimana jika NR>1 (yang artinya dilakukan pengecualian untuk baris paling atas, yaitu judul dari tabel), maka jumlah profit dari region tersebut akan dimasukkan ke arrregion[region] dan akan terus dijumlahkan profitnya kedalam arrregion[region].
 
 ```shell
-END{
+END {
   totalprofit=100000
   for(region in arrregion){
     if (totalprofit > arrregion[region]){
@@ -189,8 +190,8 @@ END{
 END merupakan special rule dalam awk. Pada, section ini, dilakukan inisialisasi untuk totalprofit yaitu 100000. Lalu untuk region yang namanya berada di arrregion, nilai dari arrregion[region] akan dibandingkan dengan nilai totalprofit, dimana jika nilai arrregion[region]  lebih kecil dari nilai totalprofit, maka nilai tersebut akan disimpan di totalprofit dan region akan tersimpan di namaregion. totalprofit dan namaregion akan terupdate jika ditemukan nilai yang lebih kecil, hingga ditemukan nilai yang paling kecil.
 
 ```shell
-  printf("Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %.1f",namaregion,totalprofit)
-}' /home/sabrina/Documents/sisop/TokoShiSop.tsv >> hasil.txt
+  printf("Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %.4f\n", namaregion, totalprofit);
+}' /home/sabrina/Documents/sisop/Laporan-TokoShiSop.tsv >> hasil.txt
 ```
 Disini wilayah bagian (region) yang total profitnya paling sedikit akan diprint. Lalu, dibagian setelah END, /home/sabrina/Document/sisop/Laporan-TokoShiShop.tsv merupakan direktori file Laporan-TokoShiSop.tsv dan hasil outputnya akan dimasukkan ke file hasil.txt.</br>
 
