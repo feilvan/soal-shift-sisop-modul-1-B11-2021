@@ -8,37 +8,45 @@ Anggota kelompok :
 ## Soal 1
 #### 1a. Membuat script untuk memotong data setiap barisnya sampai ditemukan karakter : pertama sehingga hanya menampilkan error/info, jenisnya dan username
 
-    cat syslog.log | sed 's/^.*: //'
+```shell
+cat syslog.log | sed 's/^.*: //'
+```
 
 #### 1b. Menampilkan data syslog.log namun hanya yang mengandung kata ERROR lalu memotong usernamenya dengan pattern ' (.*)' lalu di sort setelah itu data yang berulang hanya tampil sekali dengan uniq(sekaligus jumlahnya karena ada -c) dan terakhir di sort by number dan di reverse
 
-    grep 'ERROR' syslog.log | sed 's/^.*ERROR //' | sed 's/ (.*)//' | sort | uniq -c | sort -nr
+```shell
+grep 'ERROR' syslog.log | sed 's/^.*ERROR //' | sed 's/ (.*)//' | sort | uniq -c | sort -nr
+```
 
 ![1](https://i.imgur.com/PHfmh5m.png)
 ![1](https://i.imgur.com/83VRZhx.png)
 
 #### 1d.Sama dengan 1b namun dimasukan ke error_message.csv dan dengan urutan data sesuai perintah soal
 
-    echo Error,Count >> error_message.csv
-    grep -oE '(ERROR) .* ' syslog.log | sed s/"ERROR "// | sort  | uniq -c | sort -nr | while read count text
-    do
-         echo $text,$count >> error_message.csv
-    done
+```shell
+echo Error,Count >> error_message.csv
+grep -oE '(ERROR) .* ' syslog.log | sed s/"ERROR "// | sort  | uniq -c | sort -nr | while read count text
+do
+     echo $text,$count >> error_message.csv
+done
+```
 
 ![1](https://i.imgur.com/6DZEKCb.png)
 
 #### 1c&e. Menampilkan data username, jumlah info dan jumlah error dengan urutan berdasarkan username
 
-    echo Username,INFO,ERROR >> user_statistic.csv
-    # memfilter data menjadi jumlah error/info dan usernamenya diurutkan berdasarkan nama ascending lalu di read per line
-    grep -oE '.* (\(.*\))' syslog.log | sed  's/.*(\(.*\))/\1/' | sort | uniq -c | while read count name
-    do 
-        infoUser=`grep -oE ".* (INFO) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
-        errUser=`grep -oE ".* (ERROR) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
-        echo $name,$infoUser,$errUser >> user_statistic.csv
-    done
+```shell
+echo Username,INFO,ERROR >> user_statistic.csv
+# memfilter data menjadi jumlah error/info dan usernamenya diurutkan berdasarkan nama ascending lalu di read per line
+grep -oE '.* (\(.*\))' syslog.log | sed  's/.*(\(.*\))/\1/' | sort | uniq -c | while read count name
+do 
+    infoUser=`grep -oE ".* (INFO) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
+    errUser=`grep -oE ".* (ERROR) .* (\($name\))" syslog.log | sed  's/.*(\(.*\))/\1/' | wc -l | sed 's/^[ \t]*//'`
+    echo $name,$infoUser,$errUser >> user_statistic.csv
+done
 
-    #Didalam while loop pada setiap iterasi disimpan data jumlah error dan jumlah info pada setiap username dan sebelum iterasi selanjutnya data berupa nama,jumlah info, jumlah error dikriim ke user_statistic.csv
+#Didalam while loop pada setiap iterasi disimpan data jumlah error dan jumlah info pada setiap username dan sebelum iterasi selanjutnya data berupa nama,jumlah info, jumlah error dikriim ke user_statistic.csv
+```
 
 ![1](https://i.imgur.com/FDnCpdH.png)
 
@@ -50,62 +58,72 @@ Kendala pengerjaan no. 1 secara keseluruhan:
 
 Pertama membuat file log kosong
 
-    printf "" > Foto.log
+```shell
+printf "" > Foto.log
+```
 
 Buat loop 23 kali untuk mengunduh gambar dan menyimpan log
 
-    for i in {1..23}
-    do
-        #download & simpan di log
-        wget "https://loremflickr.com/320/240/kitten" -O download -a Foto.log
-        
+```shell
+for i in {1..23}
+do
+    #download & simpan di log
+    wget "https://loremflickr.com/320/240/kitten" -O download -a Foto.log
+```
+
 Cek jika ini file pertama maka langsung rename
 
-    if [ $i -eq 1 ]
-    then
-        mv download `printf "Koleksi_%02d" "$nokoleksi"`
-        nokoleksi=$(($nokoleksi+1))
-    fi
+```shell
+if [ $i -eq 1 ]
+then
+    mv download `printf "Koleksi_%02d" "$nokoleksi"`
+    nokoleksi=$(($nokoleksi+1))
+fi
+```
     
 Buat loop untuk file selanjutnya untuk cek apakah file sama atau tidak
 
-    fileissame=0
+```shell
+fileissame=0
 
-    #untuk file selanjutnya
-    for((j=1;j<nokoleksi;j=j+1))
-    do
-        if [ $i -eq 1 ]
-        then
-            break
-        fi
+#untuk file selanjutnya
+for((j=1;j<nokoleksi;j=j+1))
+do
+    if [ $i -eq 1 ]
+    then
+        break
+    fi
 
-	      #cek apakah nama file sama
-        filename=`printf "Koleksi_%02d" "$j"`
+    #cek apakah nama file sama
+    filename=`printf "Koleksi_%02d" "$j"`
 
-        same=`cmp $filename download -b`
-        if [ -z "$same" ]
-        then
-            fileissame=1
-            break
-        else
-            fileissame=0
-        fi
-    done
+    same=`cmp $filename download -b`
+    if [ -z "$same" ]
+    then
+        fileissame=1
+        break
+    else
+        fileissame=0
+    fi
+done
+```
     
 Selanjutnya jika nama tidak sama maka akan direname
 
-    if [ $i -gt 1 ]
+```shell
+if [ $i -gt 1 ]
+then
+    if [ $fileissame -eq 1 ]
     then
-        if [ $fileissame -eq 1 ]
-        then
-	    #jika nama sama maka hapus
-            rm download
-        else
-	    #jika nama tidak sama maka direname
-            mv download `printf "Koleksi_%02d" "$nokoleksi"`
-            nokoleksi=$(($nokoleksi+1))
-        fi
+        #jika nama sama maka hapus
+        rm download
+    else
+        #jika nama tidak sama maka direname
+        mv download `printf "Koleksi_%02d" "$nokoleksi"`
+        nokoleksi=$(($nokoleksi+1))
     fi
+fi
+```
 
 Berikut hasil dari script diatas
 ![3a](https://i.imgur.com/EH9ULrk.png)
@@ -117,27 +135,35 @@ Kendala 3a:
 
 Jalankan script 3a
 
-    cd ~/modul1/soal3
-    bash ./soal3a.sh
-    
+```shell
+cd ~/modul1/soal3
+bash ./soal3a.sh
+```
+
 Buat folder seperti format
 
-    download_date=$(date +"%d-%m-%Y")
-    mkdir "$download_date"
-    
+```shell
+download_date=$(date +"%d-%m-%Y")
+mkdir "$download_date"
+```
+
 Lalu pindah gambar & log ke folder
 
-    mv ./Koleksi_* "./$download_date/"
-    mv ./Foto.log "./$download_date/"
-    
+```shell
+mv ./Koleksi_* "./$download_date/"
+mv ./Foto.log "./$download_date/"
+```
+
 Gunakan cron untuk otomatisasi
 
-    0 20 1-31/7,2-31/4 * * bash ./home/xa/modul1/soal3:/soal3b.sh
-    # menit 0
-    # jam 20 (8 malam)
-    # untuk tgl 1-31 setiap 7 hari sekali
-    # untuk tgl 2-31 setiap 4 hari sekali
-    
+```shell
+0 20 1-31/7,2-31/4 * * bash ./home/xa/modul1/soal3:/soal3b.sh
+# menit 0
+# jam 20 (8 malam)
+# untuk tgl 1-31 setiap 7 hari sekali
+# untuk tgl 2-31 setiap 4 hari sekali
+```
+
 Berikut hasil dari script diatas
 ![3b](https://i.imgur.com/wqnAOhV.png)
 
@@ -148,68 +174,84 @@ Kendala 3b:
 
 Pertama buat satu folder bernama "Koleksi" untuk mengumpulkan semua folder agar di soal selanjutnya lebih mudah. Lalu buat fungsi untuk mengunduh gambar kucing dan kelinci secara terpisah
 
-    kitten () {
+```shell
+kitten () {
+```
 
 Pindah ke direktori koleksi
 
-       cd Koleksi
+```shell
+   cd Koleksi
+```
 
 Buat folder sesuai format lalu masuk ke direktori tersebut
 
-       mkdir $(date "+ Kucing_%d-%m-%Y")
-       cd $(date "+ Kucing_%d-%m-%Y")
-       
+```shell
+   mkdir $(date "+ Kucing_%d-%m-%Y")
+   cd $(date "+ Kucing_%d-%m-%Y")
+```
+
 Buat file untuk menyimpan log agar terminal terlihat rapi (opsional). Lalu download gambar
-       
-       printf "" > Foto.log
-       wget https://loremflickr.com/320/240/kitten -a Foto.log
-       cd
-    }
-    
+
+```shell
+   printf "" > Foto.log
+   wget https://loremflickr.com/320/240/kitten -a Foto.log
+   cd
+}
+```
+
 Buat script yang sama untuk fungsi mengunduh gambar kelinci
-    
-    bunny () {
-       echo "Download: Kelinci"
-       cd Koleksi
-       mkdir $(date "+ Kelinci_%d-%m-%Y")
-       cd $(date "+ Kelinci_%d-%m-%Y")
-       printf "" > Foto.log
-       wget https://loremflickr.com/320/240/bunny -a Foto.log
-       cd
-    }
+
+```shell
+bunny () {
+   echo "Download: Kelinci"
+   cd Koleksi
+   mkdir $(date "+ Kelinci_%d-%m-%Y")
+   cd $(date "+ Kelinci_%d-%m-%Y")
+   printf "" > Foto.log
+   wget https://loremflickr.com/320/240/bunny -a Foto.log
+   cd
+}
+```
 
 Buat inisialisasi week of year & day of week. Dan tampilkan date, day, dan week (opsional)
 
-    d=$(date +"%a %d %b %Y")
-    day=$(($(date +"%w")+1))
-    week=$(($(date +"%U")+1))
-    
-    echo "$d"
-    echo "Day: $day"
-    echo "Week: $week"
-    
+```shell
+d=$(date +"%a %d %b %Y")
+day=$(($(date +"%w")+1))
+week=$(($(date +"%U")+1))
+
+echo "$d"
+echo "Day: $day"
+echo "Week: $week"
+```
+
 Untuk minggu genap dan hari genap maka jalankan fungsi kitten, untuk minggu genap dan hari ganjil maka jalankan fungsi bunny.
 
-    if [ $((week%2)) -eq 0 ] # minggu genap
-    then
-       if [ $((day%2)) -eq 0 ] # hari genap
-       then
-          kitten
-       else # hari ganjil
-          bunny
-       fi
+```shell
+if [ $((week%2)) -eq 0 ] # minggu genap
+then
+   if [ $((day%2)) -eq 0 ] # hari genap
+   then
+      kitten
+   else # hari ganjil
+      bunny
+   fi
+```
        
 Untuk minggu ganjil jalankan kebalikan dari minggu genap.
-       
-    else # minggu ganjil
-       if [ $((day%2)) -eq 0 ] # hari genap
-       then
-          bunny
-       else # hari ganjil
-          kitten
-       fi
-    fi
-    
+
+```shell
+else # minggu ganjil
+   if [ $((day%2)) -eq 0 ] # hari genap
+   then
+      bunny
+   else # hari ganjil
+      kitten
+   fi
+fi
+```
+
 Berikut hasil dari script diatas
 ![3c](https://i.imgur.com/TTIuAP6.png)
 
@@ -220,21 +262,28 @@ Kendala 3c:
 
 Pisah fungsi zipping dan unzip (untuk dimasukkan ke cron / 3e)
 
-    function zipping() {
-    
+```shell
+function zipping() {
+```
+
 Buat "current" yang nanti digunakan untuk password (MMDDYYYY)
-    
-       current=$(date "+%m%d%Y")
-       
+
+```shell
+   current=$(date "+%m%d%Y")
+```
+
 Buat zip. Set password (-p) dengan "current". Masukkan semua subfolder (-r) ke dalam zip juga
-       
-       zip -P $current -r Koleksi.zip Koleksi/
+
+```shell
+   zip -P $current -r Koleksi.zip Koleksi/
+```
 
 Hapus direktori setelah masuk zip
 
-       rm -rf Koleksi/
-    }
-    
+```shell
+   rm -rf Koleksi/
+}
+```
 
 Berikut hasil fungsi zipping
 ![3d zip](https://i.imgur.com/jdCfYKG.png)
@@ -249,17 +298,21 @@ Kendala 3d:
 
 Tambahkan fungsi unzip ke script 3d. Script unzip hampir sama dengan zip
 
-    function unzipping() {
-       current=$(date "+%m%d%Y")
-       unzip -P $current Koleksi.zip
-       rm -f Koleksi.zip
-    }
-    
+```shell
+function unzipping() {
+   current=$(date "+%m%d%Y")
+   unzip -P $current Koleksi.zip
+   rm -f Koleksi.zip
+}
+```
+
 Buat cron job untuk menjalankan script secara otomatis
 
-    0 7 * * 1-5 source soal3d.sh; zipping
-    0 18 * * 1-5 source soal3d.sh; unzipping
-    
+```shell
+0 7 * * 1-5 source soal3d.sh; zipping
+0 18 * * 1-5 source soal3d.sh; unzipping
+```
+
 7: jalankan (zip) tiap jam 7 pagi </br>
 18: jalankan (unzip) tiap jam 6 sore </br>
 1-5: setiap hari senin sampai Jum'at
